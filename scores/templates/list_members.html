@@ -1,0 +1,15 @@
+<!-- Link to main page -->
+<a href="{% url 'main-home' %}">Return</a>
+
+<!-- List the users with a link to edit them -->
+<table>
+    {% for user in users %}
+    <tr>
+        <td>{{ user }}</td>
+        <td>
+            
+            <a href="{% url 'main-user-page' user %}">Edit</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

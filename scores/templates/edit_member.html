@@ -1,0 +1,16 @@
+
+<!-- Display list of clickable users -->
+<h1>
+  Adding score for user: {{ user }}
+</h1>
+
+<form method="post" action="{% url 'main-user-page' user %}">
+  {% csrf_token %}
+  {{ form.as_table }}
+  <input type="submit" value="submit">
+</form>
+
+<a href="{% url 'main-edit-members' %}">Return</a>
+
+
+

@@ -1,0 +1,50 @@
+<h1>Overview</h1>
+
+<!-- Go to auth page -->
+<a href="{% url 'main-auth' %}">Admin login</a>
+
+<!-- Show the DateForm -->
+<form method="post" action="{% url 'main-home' %}">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="submit">
+  </form>
+  
+<!-- Loop over scores variable and show all scores -->
+<table>
+    <tr>
+        <th>User</th>
+        <th>Total Score</th> 
+    </tr>
+    {% for key,value in total_scores.items %}
+    <!-- Display user, date, and score -->
+    <tr>
+        <td>{{ key }}</td>
+        <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+ </table>
+
+ <!-- Show highscores of all users -->
+ <table>
+    <tr>
+        <th>User</th>
+        <th>Highscore</th> 
+    </tr>
+    {% for key,value in high_scores.items %}
+    <!-- Check if highscore is larger than 6 -->
+    {% if value < 6 %}
+    <!-- Display user and highscore in red -->
+    <tr style="color:red">
+        <td>{{ key }}</td>
+        <td>{{ value }}</td>
+    {% else %}
+    <!-- Display user, date, and score -->
+    <tr>
+        <td>{{ key }}</td>
+        <td>{{ value }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+ </table>
+
