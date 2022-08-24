@@ -63,26 +63,31 @@ def auth(request):
     return render(request, 'sorry.html', {'form' : form})
 
 def edit_members(request):
-
-    users = [user.username for user in User.objects.all()]
-    
-    # Check if there are any users
-    if len(users) == 0:
-        return render(request, 'no_users.html')
-    
-    return render(request, 'list_members.html', {'users' : users})
-
+    if request.user.is_superuser:
+        users = [user.username for user in User.objects.all()]
+        
+        # Check if there are any users
+        if len(users) == 0:
+            return render(request, 'no_users.html')
+        
+        return render(request, 'list_members.html', {'users' : users})
+    else:
+        return render(request, 'not_super.html')
 def user_page(request, user):
-    
-    if request.method == 'POST':
-        form = EditUserForm(request.POST)
-        if form.is_valid():
-            # Extract data from form
-            date = form.cleaned_data['date']
-            score = form.cleaned_data['score']
-            score = Score.create(user=user, date=date, score=score)
-            score.save()
+    # Make sure user is superuser
+    if request.user.is_superuser:
+            
+        if request.method == 'POST':
+            form = EditUserForm(request.POST)
+            if form.is_valid():
+                # Extract data from form
+                date = form.cleaned_data['date']
+                score = form.cleaned_data['score']
+                score = Score.create(user=user, date=date, score=score)
+                score.save()
 
-    
-    form = EditUserForm()
-    return render(request, 'edit_member.html', {'form' : form, 'user' : user})
+        
+        form = EditUserForm()
+        return render(request, 'edit_member.html', {'form' : form, 'user' : user})
+    else:
+        return render(request, 'not_super.html')
